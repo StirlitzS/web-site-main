@@ -114,9 +114,11 @@ div, ul, h1, p{
     font-weight: 400;
     font-size: 35px;
     border-radius:0 0 50px 50px;
+
 }
 
 #main-photo {
     background-color: white;
     height: 617px;
+
 }
