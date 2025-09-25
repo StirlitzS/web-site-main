@@ -1,4 +1,14 @@
+:root {
+  --slider-width: 600px;
+  --slider-height: 340px;
 
+  --bg-page: #f0f0f0;
+  --bg-slider: #222;
+  --btn-bg: rgba(0, 0, 0, 0.45);
+
+  --transition-speed: 0.45s;
+  --transition-easing: ease-in-out;
+}
 body {
     background-color: white;
     color: white;
@@ -61,8 +71,8 @@ div, ul, h1, p{
     padding-top: 20px;
 }
 #question {
-    width: 33px;
-    height: 33px;
+    width: 37px;
+    height: 37px;
     margin-top: 7px;
     display: block;
 }
@@ -93,8 +103,6 @@ div, ul, h1, p{
     font-size: 20px;
 }
 
-
-
 #main-line {
     width: 35em;
     height: 0.1em;
@@ -114,11 +122,91 @@ div, ul, h1, p{
     font-weight: 400;
     font-size: 35px;
     border-radius:0 0 50px 50px;
-
 }
 
 #main-photo {
     background-color: white;
     height: 617px;
+    position:relative;
+}
+
+#slides {
+
+    padding-right: 10px;
+    padding-left:10px;
+    height: 478px;
+    display:flex;
+    transition: transform 0.45s ease-in-out;
+    will-change: transform;
+    width: calc(100% - 230px); /* оставляем место для кнопок или задаём точную ширину */
+        /* прячет слайды вне видимой области */
+    gap: 120px;
+}
+
+#slides img {
+    height: 350px;
+    width: 512px;
 
 }
+
+#plus-photo-1, #plus-photo-2, #plus-photo3 {
+    width: auto;
+    height: 350px;
+    margin: 64px 0 0 0;
+
+}
+
+.slide{
+
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+
+  align-items: center;
+
+  min-width: 100%;
+    gap:24px;
+
+}
+
+.slide p {
+    color: black;
+    max-width: 50%;
+    font-size: 30px;
+}
+
+#slider {
+    display: flex;
+    align-items: center; /* центр по высоте */
+    width: 100%;
+    overflow: hidden;
+}
+
+
+
+.btn{
+    background-color: white;
+    border-color: white;
+    width:38px;
+    height: 64px;
+    box:shadow;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: inline-flex; /* или inline-flex */
+    vertical-align: center;
+}
+
+.btn img {
+    width: 30px;
+    height: 60px;
+}
+#prev {
+    transform: scaleX(-1);
+    margin-left: 5%;
+}
+#next {
+    margin-right: 5%;
+}
+
