@@ -138,7 +138,7 @@ div, ul, h1, p{
     display:flex;
     transition: transform 0.45s ease-in-out;
     will-change: transform;
-    width: calc(100% - 150px); /* оставляем место для кнопок или задаём точную ширину */
+    width: calc(100% - 230px); /* оставляем место для кнопок или задаём точную ширину */
         /* прячет слайды вне видимой области */
     gap: 120px;
 }

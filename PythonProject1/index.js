@@ -20,26 +20,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   prevBtn.addEventListener('click', () => {
-    currentIndex = Math.max(currentIndex - 1, 0);
+    currentIndex = (currentIndex - 1) % 3;
     update();
   });
 
-  // Автопрокрутка (опционально)
-  let autoplay = true;
-  let interval = 4000;
-  let timer;
-  function startAuto(){ if(!autoplay) return; timer = setInterval(() => {
-      currentIndex = (currentIndex + 1) % slides.length;
-      update();
-    }, interval);
-  }
-  function stopAuto(){ clearInterval(timer); }
-  slidesWrapper.addEventListener('mouseenter', stopAuto);
-  slidesWrapper.addEventListener('mouseleave', startAuto);
 
   // Подстройка при ресайзе
   window.addEventListener('resize', update);
 
   update();
-  startAuto();
+
 });
