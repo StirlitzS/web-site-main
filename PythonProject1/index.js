@@ -20,7 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   prevBtn.addEventListener('click', () => {
-    currentIndex = (currentIndex - 1) % 3;
+    if(currentIndex - 1 < 0) {
+      currentIndex = 2;
+    } else {
+      currentIndex = currentIndex - 1
+    }
     update();
   });
 
