@@ -1,23 +1,23 @@
-
 body {
     background-color: white;
     color: white;
     background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), url("photo/main-house.jpg");
-
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: 100%;
     margin: 0;
-
 }
+
 .zen-kaku-gothic-new-regular {
   font-family: "Zen Kaku Gothic New", sans-serif;
   font-weight: 400;
   font-style: normal;
 }
+
 * {
     font-family: "Zen Kaku Gothic New", sans-serif;
 }
+
 div, ul, h1, p{
     margin: 0;
 }
@@ -33,11 +33,13 @@ div, ul, h1, p{
     position: fixed;
     transition: top 0.3s;
 }
+
 #pine {
     margin: 14px 0 0 20px;
     width: 53px;
     height: 53px;
 }
+
 #buttons-space {
     margin-left: 20px;
     width: 100%;
@@ -45,6 +47,7 @@ div, ul, h1, p{
     gap: 2px;
     display:flex;
 }
+
 .button-hat {
     border: none;
     cursor: pointer;
@@ -53,6 +56,7 @@ div, ul, h1, p{
     color: white;
     background-color: rgba(255, 255, 255, 0.03);
 }
+
 .button-hat:hover {
     background-color: rgba(255, 255, 255, 0.05);
 }
@@ -62,18 +66,21 @@ div, ul, h1, p{
     height: 61px;
     padding-top: 20px;
 }
+
 #question {
     width: 37px;
     height: 37px;
     margin-top: 7px;
     display: block;
 }
+
 #catalogue {
     width: 33px;
     height: 33px;
     display: flex;
     flex-direction: column;
 }
+
 #icons{
     margin-right: 5px;
     display: flex;
@@ -81,11 +88,13 @@ div, ul, h1, p{
     align-items: center;
     gap: 2px;
 }
+
 #main-title {
     padding-top:10em;
     text-align: center;
     vertical-align: center;
 }
+
 #main-title > h1{
     font-weight: 500;
     font-size:50px;
@@ -101,12 +110,14 @@ div, ul, h1, p{
     background-color: white;
     margin-top:0.2em;
     margin: 0 auto;
-    text-align: center; /* Центрирование текста внутри div */
+    text-align: center;
     margin-bottom: 40em;
 }
+
 #main-photo > .separator {
     background-color: black;
 }
+
 .separator {
     width: 100%;
     height: 99px;
@@ -124,42 +135,33 @@ div, ul, h1, p{
 }
 
 #slides-main, #slides-room {
-
     padding-right: 10px;
     padding-left:10px;
     height: 478px;
     display:flex;
     transition: transform 0.45s ease-in-out;
     will-change: transform;
-    width: calc(100% - 230px); /* оставляем место для кнопок или задаём точную ширину */
-        /* прячет слайды вне видимой области */
+    width: calc(100% - 230px);
     gap: 120px;
 }
 
 .photo img {
     height: 350px;
     width: 512px;
-
 }
 
 .photo {
     width: auto;
     height: 350px;
-
-
 }
 
 .slide{
-
-  height: 100%;
-  box-sizing: border-box;
-  display: flex;
-
-  align-items: center;
-
-  min-width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    min-width: 100%;
     gap:24px;
-
 }
 
 .block p {
@@ -174,8 +176,6 @@ div, ul, h1, p{
     width: 100%;
     overflow: hidden;
 }
-
-
 
 .btn{
     background-color: white;
@@ -195,24 +195,25 @@ div, ul, h1, p{
     width: 30px;
     height: 60px;
 }
+
 #prev, #prev-room {
     transform: scaleX(-1);
     margin-left: 5%;
 }
+
 #next, #next-room {
     margin-right: 5%;
 }
 
-
 .gaps {
     background-color:rgba(0,0,0,0.2);
-
 }
 
 #map-img {
     height: 500px;
     width: 500px;
 }
+
 .block-map {
     box-sizing: border-box;
     display: flex;
