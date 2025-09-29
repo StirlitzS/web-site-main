@@ -1,18 +1,8 @@
-:root {
-  --slider-width: 600px;
-  --slider-height: 340px;
 
-  --bg-page: #f0f0f0;
-  --bg-slider: #222;
-  --btn-bg: rgba(0, 0, 0, 0.45);
-
-  --transition-speed: 0.45s;
-  --transition-easing: ease-in-out;
-}
 body {
     background-color: white;
     color: white;
-    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("photo/main-house.jpg");
+    background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), url("photo/main-house.jpg");
 
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -40,6 +30,8 @@ div, ul, h1, p{
     z-index: 1;
     display: flex;
     background-attachment: fixed;
+    position: fixed;
+    transition: top 0.3s;
 }
 #pine {
     margin: 14px 0 0 20px;
@@ -90,7 +82,7 @@ div, ul, h1, p{
     gap: 2px;
 }
 #main-title {
-    margin-top: 10em;
+    padding-top:10em;
     text-align: center;
     vertical-align: center;
 }
@@ -112,11 +104,12 @@ div, ul, h1, p{
     text-align: center; /* Центрирование текста внутри div */
     margin-bottom: 40em;
 }
-
+#main-photo > .separator {
+    background-color: black;
+}
 .separator {
     width: 100%;
     height: 99px;
-    background-color: black;
     text-align: center;
     padding-top: 40px;
     font-weight: 400;
@@ -124,13 +117,13 @@ div, ul, h1, p{
     border-radius:0 0 50px 50px;
 }
 
-#main-photo {
+.block {
     background-color: white;
     height: 617px;
     position:relative;
 }
 
-#slides {
+#slides-main, #slides-room {
 
     padding-right: 10px;
     padding-left:10px;
@@ -143,16 +136,16 @@ div, ul, h1, p{
     gap: 120px;
 }
 
-#slides img {
+.photo img {
     height: 350px;
     width: 512px;
 
 }
 
-#plus-photo-1, #plus-photo-2, #plus-photo3 {
+.photo {
     width: auto;
     height: 350px;
-    margin: 64px 0 0 0;
+
 
 }
 
@@ -169,13 +162,13 @@ div, ul, h1, p{
 
 }
 
-.slide p {
+.block p {
     color: black;
     max-width: 50%;
     font-size: 30px;
 }
 
-#slider {
+.slider {
     display: flex;
     align-items: center; /* центр по высоте */
     width: 100%;
@@ -202,11 +195,28 @@ div, ul, h1, p{
     width: 30px;
     height: 60px;
 }
-#prev {
+#prev, #prev-room {
     transform: scaleX(-1);
     margin-left: 5%;
 }
-#next {
+#next, #next-room {
     margin-right: 5%;
 }
 
+
+.gaps {
+    background-color:rgba(0,0,0,0.2);
+
+}
+
+#map-img {
+    height: 500px;
+    width: 500px;
+}
+.block-map {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap:30px;
+    padding-left: calc(7.5%);
+}
