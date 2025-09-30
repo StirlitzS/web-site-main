@@ -1,3 +1,13 @@
+var prevScrollpos = window.pageYOffset;
+window.onscroll = function() {
+  var currentScrollPos = window.pageYOffset;
+  if (prevScrollpos > currentScrollPos) {
+    document.getElementById("hat").style.top = "0";
+  } else {
+    document.getElementById("hat").style.top = "-80px";
+  }
+  prevScrollpos = currentScrollPos;
+}
 document.addEventListener('DOMContentLoaded', () => {
   const slidesWrapper = document.getElementById('slides-main');
   const slides = Array.from(slidesWrapper.querySelectorAll('.slide'));
