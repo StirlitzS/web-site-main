@@ -5,8 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextBtn = document.getElementById('next');
 
   let currentIndex = 0;
-  const visibleWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--slider-width')) || 900;
-  const gap = 24; // должен совпадать с gap в CSS для #slides
+
 
   function update() {
     const slideWidth = slides[0].getBoundingClientRect().width;
@@ -42,8 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextBtn = document.getElementById('next-room');
 
   let currentIndex = 0;
-  const visibleWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--slider-width')) || 900;
-  const gap = 24; // должен совпадать с gap в CSS для #slides
+
 
   function update() {
     const slideWidth = slides[0].getBoundingClientRect().width;
@@ -66,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-  // Подстройка при ресайзе
   window.addEventListener('resize', update);
 
   update();

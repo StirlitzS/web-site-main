@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 body {
     background-color: white;
     color: white;
@@ -220,4 +224,40 @@ div, ul, h1, p{
     align-items: center;
     gap:30px;
     padding-left: calc(7.5%);
+}
+
+#booking {
+    height: 336px;
+    background-color:rgba(0,0,0,0.5);
+    padding-top: 150px;
+    border-radius:0;
+}
+
+#book-button  {
+
+    background-color: white;
+    width:300px;
+    height:100px;
+    border-radius: 30px;
+    align-items: center;
+}
+
+#book-button > p {
+    width: 300px;
+    font-size: 40px;
+    font-weight: 550;
+    text-align: center;
+}
+
+#book-button>p:hover  {
+    color: rgb(0,100,20);
+}
+
+#feedbacks {
+    background-color:white;
+    height: 1000px;
+}
+
+#feedbacks > .separator {
+    background-color:black;
 }
