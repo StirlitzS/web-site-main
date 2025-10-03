@@ -138,7 +138,7 @@ div, ul, h1, p{
     position:relative;
 }
 
-#slides-main, #slides-room {
+#slides-main, #slides-room, #slides-feedbacks {
     padding-right: 10px;
     padding-left:10px;
     height: 478px;
@@ -148,6 +148,7 @@ div, ul, h1, p{
     width: calc(100% - 230px);
     gap: 120px;
 }
+
 
 .photo img {
     height: 350px;
@@ -200,15 +201,18 @@ div, ul, h1, p{
     height: 60px;
 }
 
-#prev, #prev-room {
+#prev, #prev-room, #prev-feedbacks {
     transform: scaleX(-1);
     margin-left: 5%;
 }
 
-#next, #next-room {
+#next, #next-room, #next-feedbacks {
+
     margin-right: 5%;
 }
-
+#prev-feedbacks {
+    margin-right:30px;
+}
 .gaps {
     background-color:rgba(0,0,0,0.2);
 }
@@ -252,12 +256,119 @@ div, ul, h1, p{
 #book-button>p:hover  {
     color: rgb(0,100,20);
 }
+#slides-feedbacks {
+    padding-right: 10px;
+    padding-left:10px;
+    height: 478px;
+    display:flex;
+    transition: transform 0.45s ease-in-out;
+    will-change: transform;
+    width: calc(100% - 300px);
+    gap: 180px;
 
-#feedbacks {
-    background-color:white;
-    height: 1000px;
 }
 
-#feedbacks > .separator {
+#reviews{
+    background-color:white;
+    height: 1000px;
+
+
+}
+
+#feedback-main-separator {
+    display:flex;
     background-color:black;
+    height: 100px;
+    border-bottom-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    justify-content: center;
+    font-size: 25px;
+    align-items: center;
+
+}
+
+.feedback {
+    min-width: 400px;
+    max-width: 400px;
+    height: 500px;
+    background-color: white;
+    border-radius:20px;
+    gap:100px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    flex: 0 0 calc((100% - 100px) ); /* 3 карточки с учётом gap */
+
+}
+
+.feedback .feedback-photo {
+    width:400px;
+    min-height: 300px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    margin-bottom: 0;
+    display: flex;
+    z-index: 0;
+
+}
+
+.feedback-separator {
+    background-color:white;
+    width:300px;
+    height:2px;
+    margin-top: 0;
+}
+
+.feedback  .name {
+    color: white;
+    font-size: 30px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;    /* вертикаль */
+    justify-content: center;
+    text-align: center;
+    min-width: 160px;
+    min-height: 36px;
+    max-height:36px;
+    font-weight: 300;
+
+
+
+
+}
+.feedback-text > p {
+    color: black;
+    font-size: 20px;
+    min-width: 390px;
+    font-weight: 300;
+    height:100px;
+    margin-left:5px;
+
+}
+.feedback-text > p:hover {
+    color: #003F0D;
+}
+.feedback-text{
+    padding-top:5px;
+    height: 100px;
+
+
+}
+
+.trapezoid {
+    width: 200px;
+    height: 40px;
+    position:absolute;
+    z-index: 0;
+    border-top: #003F0D 5px;
+}
+.feedback-name-space {
+    width: 200px;
+    height:40px;
+    display:flex;
+    gap:60px;
+    padding-bottom: 5px;
+}
+
+.stars {
+    margin-top: 5px;
 }
