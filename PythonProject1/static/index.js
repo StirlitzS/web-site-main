@@ -114,3 +114,10 @@ document.addEventListener('DOMContentLoaded', () => {
   update();
 
 });
+document.querySelector("#phone-button").addEventListener("click", function() {
+    navigator.clipboard.writeText(document.querySelector("#phone-span").innerText).then(function() {
+        console.log('Text copied to clipboard');
+    }).catch(function(error) {
+        console.error('Error:', error);
+    });
+});

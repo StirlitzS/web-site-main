@@ -74,7 +74,7 @@ div, ul, h1, p{
 #question {
     width: 37px;
     height: 37px;
-    margin-top: 7px;
+    margin-top: 5px;
     display: block;
 }
 
@@ -149,7 +149,6 @@ div, ul, h1, p{
     gap: 120px;
 }
 
-
 .photo img {
     height: 350px;
     width: 512px;
@@ -167,6 +166,7 @@ div, ul, h1, p{
     align-items: center;
     min-width: 100%;
     gap:24px;
+    justify-content: center;
 }
 
 .block p {
@@ -177,7 +177,8 @@ div, ul, h1, p{
 
 .slider {
     display: flex;
-    align-items: center; /* центр по высоте */
+    align-items: center;
+    justify-content: center;
     width: 100%;
     overflow: hidden;
 }
@@ -203,16 +204,8 @@ div, ul, h1, p{
 
 #prev, #prev-room, #prev-feedbacks {
     transform: scaleX(-1);
-    margin-left: 5%;
 }
 
-#next, #next-room, #next-feedbacks {
-
-    margin-right: 5%;
-}
-#prev-feedbacks {
-    margin-right:30px;
-}
 .gaps {
     background-color:rgba(0,0,0,0.2);
 }
@@ -231,10 +224,12 @@ div, ul, h1, p{
 }
 
 #booking {
-    height: 336px;
+    height: 350px;
     background-color:rgba(0,0,0,0.5);
-    padding-top: 150px;
+    display: flex;
     border-radius:0;
+    align-items:center;
+    justify-content: center;
 }
 
 #book-button  {
@@ -244,6 +239,7 @@ div, ul, h1, p{
     height:100px;
     border-radius: 30px;
     align-items: center;
+
 }
 
 #book-button > p {
@@ -258,21 +254,18 @@ div, ul, h1, p{
 }
 #slides-feedbacks {
     padding-right: 10px;
-    padding-left:10px;
+    padding-left: 10px;
     height: 478px;
     display:flex;
     transition: transform 0.45s ease-in-out;
     will-change: transform;
     width: calc(100% - 300px);
     gap: 180px;
-
 }
 
 #reviews{
     background-color:white;
-    height: 1000px;
-
-
+    height: 1100px;
 }
 
 #feedback-main-separator {
@@ -280,11 +273,10 @@ div, ul, h1, p{
     background-color:black;
     height: 100px;
     border-bottom-left-radius: 20px;
-    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
     justify-content: center;
-    font-size: 25px;
+    font-size: 35px;
     align-items: center;
-
 }
 
 .feedback {
@@ -296,7 +288,7 @@ div, ul, h1, p{
     gap:100px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.12);
     flex: 0 0 calc((100% - 100px) ); /* 3 карточки с учётом gap */
-
+    font-size: 25px;
 }
 
 .feedback .feedback-photo {
@@ -307,7 +299,6 @@ div, ul, h1, p{
     margin-bottom: 0;
     display: flex;
     z-index: 0;
-
 }
 
 .feedback-separator {
@@ -327,14 +318,11 @@ div, ul, h1, p{
     justify-content: center;
     text-align: center;
     min-width: 160px;
-    min-height: 36px;
-    max-height:36px;
+    min-height: 33px;
+    max-height:33px;
     font-weight: 300;
-
-
-
-
 }
+
 .feedback-text > p {
     color: black;
     font-size: 20px;
@@ -347,20 +335,20 @@ div, ul, h1, p{
 .feedback-text > p:hover {
     color: #003F0D;
 }
+
 .feedback-text{
     padding-top:5px;
     height: 100px;
-
-
 }
 
 .trapezoid {
     width: 200px;
     height: 40px;
-    position:absolute;
+    position: absolute;
     z-index: 0;
-    border-top: #003F0D 5px;
+    margin-top: -1px;
 }
+
 .feedback-name-space {
     width: 200px;
     height:40px;
@@ -371,4 +359,152 @@ div, ul, h1, p{
 
 .stars {
     margin-top: 5px;
+}
+
+#bottom-separator {
+    background-color:black;
+    height: 3px;
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 10px;
+
+}
+
+#location-text {
+    font-size: 35px;
+}
+
+#review-button {
+    width: 300px;
+    height: 100px;
+    margin-left: calc((100% - 400px)/2);
+    margin-top: 100px;
+}
+
+#review-button{
+  position: relative;
+  overflow: hidden;         /* обрезать изображение по краям */
+  display: inline-block;
+  padding: 0;               /* текст внутри задаём через .btn-text */
+  width: 400px;
+  height: 120px;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+    border-radius: 20px;
+}
+
+#review-button img{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.7);
+  z-index: 0;
+
+}
+
+#review-button .btn-text{
+  position: relative;
+  z-index: 1;
+  color: white;
+  font-weight: 400;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  font-size: 36px;
+}
+
+#review-button:hover{
+    filter: brightness(0.8);
+}
+
+#footer {
+    height: 500px;
+    background-color: #D9D9D9;
+}
+
+#foot-separator {
+    height: 50px;
+    width:100%;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#foot-question {
+    display: flex;
+    width: 30px;
+    height: 30px;
+}
+
+.foot-button-space {
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 150px;
+}
+
+.foot-button {
+    width: 300px;
+    height: 70px;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.foot-button span {
+    font-weight: 500;
+}
+
+.foot-button  img {
+    width:40px;
+    height:40px;
+}
+
+.foot-button  span {
+    color: black;
+    width: 100%;
+    font-size: 20px;
+}
+
+.foot-button .btn {
+    width: 300px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+}
+
+#phone, #rubles   {
+    margin-left: 40px;
+}
+
+#email {
+    width: 50px;
+    height:50px;
+    margin-left: 30px;
+}
+
+#foot-rooms {
+    width: 50px;
+    height:50px;
+    margin-left: 30px;
+}
+
+#foot-booking {
+    margin-left: 40px;
+    width: 40px;
+    height:40px;
+}
+
+#foot-reviews {
+    margin-left: 35px;
+}
+
+#phone-number {
+    text-align: center;
 }
