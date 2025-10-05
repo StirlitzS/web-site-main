@@ -116,10 +116,35 @@
             <p>Турбаза расположена на западном побережье озера Байкал, в живописной бухте у подножия Приморского хребта. Ближайший населенный пункт — поселок Листвянка (15 км). Это идеальная точка для старта путешествий по озеру: до Иркутска — 70 км, а до знаменитого Кругобайкальского пути — всего 20 минут на катере.</p>
         </div>
     </div>
-
     <div id="booking" class="separator">
-        <button id="book-button" class="btn"><p>Забронировать</p></button>
+        <button id="book-button" class="btn" onclick="openForm()"><p>Забронировать</p></button>
     </div>
+<div id="overlay"></div>
+<div class="form-popup" id="myForm">
+
+  <form class="form-container" id="myFormIn">
+
+    <h1>Забронировать</h1>
+
+    <label for="name-form"><b>Имя</b></label>
+    <input type="text" placeholder="Введите Ваше имя" name="name" required>
+
+    <label for="phone-number-form"><b>Номер телефона</b></label>
+    <input type="tel" placeholder="Введите номер телефона" name="phone_number" required>
+
+    <label for="date-arrive"><b>Дата заезда</b></label>
+    <input type="date" name="date_arrival" required>
+
+      <label for="date-arrive"><b>Дата выезда</b></label>
+    <input type="date" name="date_departure" required>
+
+
+    <button type="submit" class="btn" onclick="">Оставить заявку</button>
+    <button type="button" class="btn cancel" onclick="closeForm();">Закрыть</button>
+  </form>
+
+
+
     <div id="reviews">
         <div id="feedback-main-separator">Отзывы</div>
     <div class="block slider">
@@ -286,7 +311,7 @@
             </div>
             <div class="foot-button">
                 <button class="btn" onclick="location.href='https://d.braev@yandex.ru'" type="button">
-                    <img src="../static/icons/email.png" id="email">
+                    <img src="../static/icons/email.png" id="foot-email">
                     <span>notascam@gmail.com</span>
                 </button>
             </div>
@@ -320,5 +345,6 @@
             </div>
         </div>
     </div>
+    <script src="../static/index.js"></script>
 </body>
 </html>

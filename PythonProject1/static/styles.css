@@ -195,6 +195,7 @@ div, ul, h1, p{
     cursor: pointer;
     display: inline-flex; /* или inline-flex */
     vertical-align: center;
+    z-index:5;
 }
 
 .btn img {
@@ -483,7 +484,7 @@ div, ul, h1, p{
     margin-left: 40px;
 }
 
-#email {
+#foot-email {
     width: 50px;
     height:50px;
     margin-left: 30px;
@@ -507,4 +508,101 @@ div, ul, h1, p{
 
 #phone-number {
     text-align: center;
+}
+
+label {
+    color:black;
+}
+
+input {
+    width: 290px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+
+/* Всплывающая форма-скрыта по умолчанию */
+.form-popup {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9;
+
+}
+
+/* Добавить стили для контейнера формы */
+.form-container {
+  max-width: 350px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 1001;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.form-popup h1 {
+    color: black;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.form-container input[type=text], .form-container input[type=tel], .form-container input[type=date] {
+  width: 270px;
+  padding: 15px;
+  border: none;
+  background: #f1f1f1;
+    margin-bottom: 10px;
+    margin-top: 8px;
+}
+
+.form-container input[type=text]:focus, .form-container input[type=tel]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+.form-container .btn {
+  background-color: rgb(0,100,20);;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+
+/* Добавить красный цвет фона для кнопки "Отмена" */
+.form-container .cancel {
+  background-color: black;
+}
+
+/* Добавить некоторые эффекты наведения на кнопки */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 0.95;
+}
+#overlay {
+    position: fixed;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 6;
+    display:flex;
+    width:100%;
+    height: 100%;
+    top: 0;
+    left:0;
+    display:none;
+}
+.css-modal-details {
+    display:none;
 }
