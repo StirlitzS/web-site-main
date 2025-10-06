@@ -657,3 +657,13 @@ textarea {
 form .btn {
     border-radius: 10px;
 }
+
+#admin-button {
+    border: none;
+    display:flex;
+    background:none;
+}
+
+#admin-btn-container {
+    justify-items: center;
+}

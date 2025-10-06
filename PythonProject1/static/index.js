@@ -138,4 +138,71 @@ form.addEventListener('submit', async (e) => {
   if (overlay && getComputedStyle(overlay).display === 'block') overlay.style.display = 'none';
   if (modal && getComputedStyle(modal).display === 'block') modal.style.display = 'none';
   });
+
+  const openBtn = document.getElementById('admin-button');
+  const modal = document.getElementById('admin');
+  const form = document.getElementById('admin-auth');
+  const closeBtn = form?.querySelector('.cancel');
+
+
+  const loginInput = form?.querySelector('input[placeholder*="логин"]') || form?.querySelector('input[name="login"]') || null;
+  const passInput = form?.querySelector('input[placeholder*="пароль"]') || form?.querySelectorAll('input')[1] || null;
+  if (loginInput) loginInput.name = 'login';
+  if (passInput) passInput.name = 'password';
+
+
+  let overlay = document.getElementById('overlay-admin');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'overlay-admin';
+    Object.assign(overlay.style, {
+      position: 'fixed',
+      inset: '0',
+      background: 'rgba(0,0,0,0.4)',
+      display: 'none',
+      zIndex: '999'
+    });
+    document.body.appendChild(overlay);
+  }
+
+  if (modal) Object.assign(modal.style, { position: 'fixed', zIndex: '1000', display: 'none' });
+
+  function showModal(){
+    overlay.style.display = 'block';
+    modal.style.display = 'block';
+    modal.style.left = '50%';
+    modal.style.top = '50%';
+    modal.style.transform = 'translate(-50%, -50%)';
+    form?.querySelector('input')?.focus();
+  }
+
+  function hideModal(){
+    overlay.style.display = 'none';
+    modal.style.display = 'none';
+    form?.reset();
+  }
+
+  openBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    showModal();
+  });
+
+  overlay.addEventListener('click', hideModal);
+  closeBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    hideModal();
+  });
+
+  modal?.addEventListener('click', (e) => e.stopPropagation());
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') hideModal();
+  });
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const data = Object.fromEntries(new FormData(form).entries());
+
+  });
 })();

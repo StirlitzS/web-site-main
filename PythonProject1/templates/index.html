@@ -126,16 +126,16 @@
 
     <h1>Забронировать</h1>
 
-    <label for="name-form">Имя</label>
+    <label>Имя</label>
     <input type="text" placeholder="Введите Ваше имя" name="name" required>
 
-    <label for="phone-number-form">Номер телефона</label>
+    <label>Номер телефона</label>
     <input type="tel" placeholder="Введите номер телефона" name="phone_number" required>
 
-    <label for="date-arrive">Дата заезда</label>
+    <label>Дата заезда</label>
     <input type="date" name="date_arrival" required>
 
-    <label for="date-arrive">Дата выезда</label>
+    <label>Дата выезда</label>
     <input type="date" name="date_departure" required>
 
     <fieldset>
@@ -304,7 +304,7 @@
 
     <h1>Отзыв</h1>
 
-    <label for="name-review">Имя</label>
+    <label>Имя</label>
     <input type="text" placeholder="Введите Ваше имя" name="name" required>
 
     <div id="review-question">Что вам запомнилось?</div>
@@ -316,7 +316,7 @@
     <div><label><input type="radio" name="mark" value="3" required>3 Звезды</label></div>
     <div><label><input type="radio" name="mark" value="4" required>4 Звезды</label></div>
     <div><label><input type="radio" name="mark" value="5" required>5 Звёзд</label></div>
-  </fieldset>
+    </fieldset>
     <button type="submit" class="btn" >Отправить отзыв</button>
     <button type="button" class="btn cancel" onclick="">Закрыть окно</button>
   </form>
@@ -344,7 +344,7 @@
                 </button>
             </div>
             <div class="foot-button">
-                <button class="btn" onclick="location.href='#booking'">
+                <button class="btn" onclick="location.href='#booking';">
                     <img src="../static/icons/ruble.png" id="rubles">
                     <span>Прейскурант</span>
                 </button>
@@ -352,25 +352,38 @@
         </div>
         <div class="foot-button-space">
             <div class="foot-button">
-                <button class="btn" onclick="location.href='#rooms'">
+                <button class="btn" onclick="location.href='#rooms'; ">
                     <img src="../static/icons/rooms.jpg" id="foot-rooms" >
                     <span>Гостевые номера</span>
                 </button>
             </div>
             <div class="foot-button">
-                <button class="btn" onclick="location.href='#reviews'">
+                <button class="btn" onclick="location.href='#reviews'; ">
                     <img src="../static/icons/reviews.png" id="foot-reviews">
                     <span>Отзывы</span>
                 </button>
             </div>
             <div class="foot-button">
-                <button class="btn" onclick="location.href='#booking'">
+                <button class="btn" onclick="location.href='#booking'; ">
                     <svg width="36" height="27" viewBox="0 0 36 27" fill="none" xmlns="http://www.w3.org/2000/svg" id="foot-booking">
                     <path d="M35.2991 5.63389C35.2991 6.22913 35.0908 6.73508 34.6741 7.15175L18.5134 23.3125L15.4777 26.3482C15.061 26.7648 14.555 26.9732 13.9598 26.9732C13.3646 26.9732 12.8586 26.7648 12.4419 26.3482L9.40623 23.3125L1.32587 15.2321C0.9092 14.8154 0.700867 14.3095 0.700867 13.7142C0.700867 13.119 0.9092 12.6131 1.32587 12.1964L4.36158 9.16068C4.77825 8.74401 5.2842 8.53568 5.87944 8.53568C6.47468 8.53568 6.98063 8.74401 7.3973 9.16068L13.9598 15.7455L28.6027 1.08032C29.0193 0.663656 29.5253 0.455322 30.1205 0.455322C30.7158 0.455322 31.2217 0.663656 31.6384 1.08032L34.6741 4.11604C35.0908 4.5327 35.2991 5.03866 35.2991 5.63389Z" fill="black"/>
                     </svg>
                     <span>Забронировать</span>
                 </button>
             </div>
+        </div>
+        <div id="admin-btn-container"><button id="admin-button" onclick="">Вход для администрации</button></div>
+        <div class="form-popup" id="admin">
+            <form class="form-container" id="admin-auth">
+                <label>Логин</label>
+                <input type="text" placeholder="Введите логин" name="login" required>
+
+                <label>Пароль</label>
+                <input type="text" placeholder="Введите пароль" name="password" required>
+
+                <button class="btn" type="submit">Войти</button>
+                <button class="btn cancel">Закрыть</button>
+            </form>
         </div>
     </div>
     <script src="../static/index.js"></script>
