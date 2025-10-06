@@ -115,7 +115,7 @@ form.addEventListener('submit', async (e) => {
   function hideModal(){
     if (overlay_2) overlay.style.display = 'none';
     if (modal) modal.style.display = 'none';
-    if (hat) hat.style.display = 'block';
+    if (hat) hat.style.display = 'flex';
     form?.reset();
   }
 
