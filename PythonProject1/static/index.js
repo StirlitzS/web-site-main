@@ -52,21 +52,23 @@
     const overlay = document.getElementById('overlay');
     const formBox = document.getElementById('myForm');
     const form = document.querySelector('form'); // ожидается одна основная форма; если несколько — используйте id в HTML
+    const hat = document.getElementById('hat')
 
     window.openForm = function () {
       if (formBox) formBox.style.display = 'block';
       if (overlay) overlay.style.display = 'block';
+      if (hat) hat.style.display = 'none';
       document.getElementById('myFormIn').reset();
     };
 
     window.closeForm = function () {
       if (formBox) formBox.style.display = 'none';
       if (overlay) overlay.style.display = 'none';
+      if (hat) hat.style.display = 'flex';
       document.getElementById('myFormIn').reset();
     };
-
     // Обработка сабмита (если форма есть)
-
+    overlay?.addEventListener('click', closeForm);
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -96,6 +98,44 @@ form.addEventListener('submit', async (e) => {
   } catch (err) {
     console.error('Send error', err);
   }
+
 });
+  const openBtn = document.getElementById('review-button');
+  const overlay_2 = document.getElementById('overlay-2');
+  const modal = document.getElementById('review');
+  const form_2 = document.getElementById('my-review');
+  const closeBtns = modal ? modal.querySelectorAll('.cancel') : [];
+
+
+  function showModal(){
+    if (overlay_2) overlay.style.display = 'block';
+    if (modal) modal.style.display = 'block';
+    if (hat) hat.style.display = 'none';
+  }
+  function hideModal(){
+    if (overlay_2) overlay.style.display = 'none';
+    if (modal) modal.style.display = 'none';
+    if (hat) hat.style.display = 'block';
+    form?.reset();
+  }
+
+  openBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    showModal();
+  });
+
+  overlay?.addEventListener('click', hideModal);
+  closeBtns.forEach(btn => btn.addEventListener('click', hideModal));
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form_2).entries());
+    console.log('Form data:', data);
+    hideModal();
+  });
+
+  // Ensure hidden by default
+  if (overlay && getComputedStyle(overlay).display === 'block') overlay.style.display = 'none';
+  if (modal && getComputedStyle(modal).display === 'block') modal.style.display = 'none';
   });
 })();

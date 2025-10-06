@@ -295,8 +295,32 @@
             </div>
 
         </div>
-                <button class="btn" id="next-feedbacks"><img src="../static/icons/cursor-right.png" ></button>
+                <button class="btn" id="next-feedbacks" onclick=""><img src="../static/icons/cursor-right.png" ></button>
     </div>
+        <div id="overlay-2"></div>
+<div class="form-popup" id="review">
+
+  <form class="form-container" id="my-review">
+
+    <h1>Отзыв</h1>
+
+    <label for="name-review">Имя</label>
+    <input type="text" placeholder="Введите Ваше имя" name="name" required>
+
+    <div id="review-question">Что вам запомнилось?</div>
+    <textarea name="message" id="message" rows="5" cols="30" placeholder="Введите текст..."></textarea>
+
+    <fieldset>
+    <div><label><input type="radio" name="mark" value="1" required>1 Звезда</label></div>
+    <div><label><input type="radio" name="mark" value="2" required>2 Звезды</label></div>
+    <div><label><input type="radio" name="mark" value="3" required>3 Звезды</label></div>
+    <div><label><input type="radio" name="mark" value="4" required>4 Звезды</label></div>
+    <div><label><input type="radio" name="mark" value="5" required>5 Звёзд</label></div>
+  </fieldset>
+    <button type="submit" class="btn" >Отправить отзыв</button>
+    <button type="button" class="btn cancel" onclick="">Закрыть окно</button>
+  </form>
+</div>
     <div id="bottom-separator"></div>
     <button id="review-button" class="btn">
   <img src="../static/photo/main-house.jpg" id="review-btn-photo" alt="">
