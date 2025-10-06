@@ -15,7 +15,7 @@ class Booking(BaseModel):
     phone_number: str
     date_arrival: datetime
     date_departure: datetime
-
+    room_number: str
 
 @app.get("/", response_class=HTMLResponse)
 async def read_index(request: Request):
@@ -23,7 +23,8 @@ async def read_index(request: Request):
 
 @app.post("/add-booking")
 async def read_index(booking: Booking):
-    return {booking.name: booking.phone_number}
+
+    return {booking.room_number: booking.phone_number}
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host='127.0.0.1', port=8000, reload=True, workers=3)

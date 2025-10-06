@@ -66,30 +66,36 @@
     };
 
     // Обработка сабмита (если форма есть)
-    if (form) {
-  form.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(form).entries());
-    const json = JSON.stringify(data);
-    document.getElementById('myFormIn').reset();
-    try {
-      const res = await fetch('/add-booking', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: json,
-      });
 
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const result = await res.json(); // если сервер возвращает JSON
-      console.log('OK:', result);
-      if (formBox) formBox.style.display = 'none';
-      if (overlay) overlay.style.display = 'none';
-    } catch (err) {
-      console.error('Send error:', err);
-      console.log(json);
-      // показать сообщение об ошибке пользователю при необходимости
-    }
-  });
-};
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+  }
+
+  const fd = new FormData(form);
+  // FormData автоматически содержит выбранный radio (по name="options")
+  const data = Object.fromEntries(fd.entries());
+  // Если нужно, преобразовать пустые строки в null или прочее — добавьте здесь
+
+  try {
+    const res = await fetch('/add-booking', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error(res.status);
+    // очистить/закрыть
+    form.reset();
+    if (formBox) formBox.style.display = 'none';
+    if (overlay) overlay.style.display = 'none';
+    const json = await res.json().catch(() => null);
+    console.log('Server response', json);
+  } catch (err) {
+    console.error('Send error', err);
+  }
+});
   });
 })();

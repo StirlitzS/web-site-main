@@ -126,19 +126,23 @@
 
     <h1>Забронировать</h1>
 
-    <label for="name-form"><b>Имя</b></label>
+    <label for="name-form">Имя</label>
     <input type="text" placeholder="Введите Ваше имя" name="name" required>
 
-    <label for="phone-number-form"><b>Номер телефона</b></label>
+    <label for="phone-number-form">Номер телефона</label>
     <input type="tel" placeholder="Введите номер телефона" name="phone_number" required>
 
-    <label for="date-arrive"><b>Дата заезда</b></label>
+    <label for="date-arrive">Дата заезда</label>
     <input type="date" name="date_arrival" required>
 
-      <label for="date-arrive"><b>Дата выезда</b></label>
+    <label for="date-arrive">Дата выезда</label>
     <input type="date" name="date_departure" required>
 
-
+    <fieldset>
+    <div><label><input type="radio" name="room_number" value="1" required>Первый номер с видом на озеро</label></div>
+    <div><label><input type="radio" name="room_number" value="2" required>Второй номер с собственным джакузи</label></div>
+    <div><label><input type="radio" name="room_number" value="3" required>Президентский люкс</label></div>
+  </fieldset>
     <button type="submit" class="btn" onclick="">Оставить заявку</button>
     <button type="button" class="btn cancel" onclick="closeForm();">Закрыть</button>
   </form>
