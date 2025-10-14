@@ -544,7 +544,7 @@ font-weight: 500;
   left: 50%;
   top: 50%;
   transform: translate(-50%,-50%);
-  z-index: 1001;
+  z-index: 1005;
   padding: 20px;
   border-radius: 8px;
 }
@@ -658,12 +658,49 @@ form .btn {
     border-radius: 10px;
 }
 
-#admin-button {
+#admin-button, #admin-enter {
     border: none;
     display:flex;
     background:none;
+    z-index: 10000;
+    justify-content: center;
+    color: rgba(0,0,0,0.5);
+
 }
 
-#admin-btn-container {
-    justify-items: center;
+.container.visible {
+  display: block;
+  opacity: 1;
+}
+.container {
+  display: none; /* скрыть по умолчанию */
+  transition: opacity 0.2s ease;
+  opacity: 0;
+    background-color:white;
+    color:black;
+    margin-top: -20px;
+    padding: 20px;
+}
+.container table{
+    border-collapse: collapse; /* чтобы границы соседних ячеек сливались */
+}
+
+th, td {
+  border: 1px solid #ccc;   /* цвет/толщина линии */
+  padding: 8px;
+}
+#table-id{
+    width: 50px;
+}
+#table-name{
+    min-width: 70px;
+}
+#table-phone{
+    min-width:150px;
+}
+#table-room{
+    min-width: 50px;
+}
+#exit *{
+    margin-top:10px;
 }

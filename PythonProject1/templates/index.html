@@ -12,7 +12,7 @@
 </head>
 <body>
     <div id="hat">
-        <img src="../static/icons/pine.png" id="pine">
+        <img src="../static/icons/pine.png" id="pine" alt="Шишка">
         <div id="buttons-space">
             <button class="button-hat" onclick="location.href='#rooms'">Номера</button>
             <button class="button-hat" onclick="location.href='#location'">Местоположение</button>
@@ -27,8 +27,8 @@
 
         </div>
         <div id="icons">
-            <img src="../static/icons/question-mark1.png" id="question">
-            <img src="../static/icons/catalogue.png" id="catalogue">
+            <img src="../static/icons/question-mark1.png" id="question" alt="">
+            <img src="../static/icons/catalogue.png" id="catalogue" alt="">
         </div>
     </div>
 
@@ -45,33 +45,33 @@
         <div class="separator">Наши плюсы</div>
         <div class="slider">
 
-        <button class="btn" id="prev"><img src="../static/icons/cursor-right.png"></button>
+        <button class="btn" id="prev"><img src="../static/icons/cursor-right.png" alt=""></button>
 
         <div id="slides-main">
 
             <div class="slide photo">
-            <img src="../static/photo/main-photo-1.jpg">
+            <img src="../static/photo/main-photo-1.jpg" alt="">
             <p>Глобальная инфа о базе1
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 Ut enim ad minim veniaaboris nisi ut consequat. </p>
             </div>
 
             <div class="slide photo">
-            <img src="../static/photo/main-house.jpg">
+            <img src="../static/photo/main-house.jpg" alt="">
             <p>Глобальная инфа о базе2
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 Ut enim ad minim veniaaboris nisi ut consequat. </p>
             </div>
 
             <div class="slide photo">
-            <img src="../static/photo/main-house.jpg">
+            <img src="../static/photo/main-house.jpg" alt="">
             <p>Глобальная инфа о базе3
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 Ut enim ad minim veniaaboris nisi ut consequat. </p>
             </div>
 
         </div>
-        <button class="btn" id="next"><img src="../static/icons/cursor-right.png" ></button>
+        <button class="btn" id="next"><img src="../static/icons/cursor-right.png"  alt=""></button>
         </div>
     </div>
     <div id="rooms">
@@ -81,33 +81,33 @@
     </div>
     <div class="block slider">
 
-        <button class="btn" id="prev-room"><img src="../static/icons/cursor-right.png"></button>
+        <button class="btn" id="prev-room"><img src="../static/icons/cursor-right.png" alt=""></button>
 
         <div id="slides-room">
 
             <div class="slide photo">
-            <img src="../static/photo/main-photo-1.jpg">
+            <img src="../static/photo/main-photo-1.jpg" alt="">
             <p>Глобальная инфа о базе1
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 Ut enim ad minim veniaaboris nisi ut consequat. </p>
             </div>
 
             <div class="slide photo">
-            <img src="../static/photo/main-house.jpg">
+            <img src="../static/photo/main-house.jpg" alt="">
             <p>Глобальная инфа о базе2
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 Ut enim ad minim veniaaboris nisi ut consequat. </p>
             </div>
 
             <div class="slide photo">
-            <img src="../static/photo/main-house.jpg">
+            <img src="../static/photo/main-house.jpg" alt="">
             <p>Глобальная инфа о базе3
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 Ut enim ad minim veniaaboris nisi ut consequat. </p>
             </div>
 
         </div>
-        <button class="btn" id="next-room"><img src="../static/icons/cursor-right.png" ></button>
+        <button class="btn" id="next-room"><img src="../static/icons/cursor-right.png"  alt=""></button>
         </div>
     <div id="location">
         <div class="separator gaps" id="location-text">Местоположение</div>
@@ -298,9 +298,9 @@
                 <button class="btn" id="next-feedbacks" onclick=""><img src="../static/icons/cursor-right.png" ></button>
     </div>
         <div id="overlay-2"></div>
-<div class="form-popup" id="review">
+<div class="form-popup" id="review-1">
 
-  <form class="form-container" id="my-review">
+  <form class="form-container" id="my-review-1">
 
     <h1>Отзыв</h1>
 
@@ -329,7 +329,7 @@
 
     </div>
 
-    <script src="../static/index.js"></script>
+
     <div id="footer">
         <div id="foot-separator"><img src="../static/icons/question-mark1.png" id="foot-question"></div>
         <div class="foot-button-space">
@@ -371,21 +371,76 @@
                     <span>Забронировать</span>
                 </button>
             </div>
-        </div>
-        <div id="admin-btn-container"><button id="admin-button" onclick="">Вход для администрации</button></div>
-        <div class="form-popup" id="admin">
-            <form class="form-container" id="admin-auth">
-                <label>Логин</label>
-                <input type="text" placeholder="Введите логин" name="login" required>
 
-                <label>Пароль</label>
-                <input type="text" placeholder="Введите пароль" name="password" required>
-
-                <button class="btn" type="submit">Войти</button>
-                <button class="btn cancel">Закрыть</button>
-            </form>
         </div>
+        <div id="admin-button"><button type="button" id="admin-enter">Вход для администрации</button></div>
     </div>
+
+    <div class="container" id="admin-btn-container">
+    <div class="card">
+      <h2>Вход администратора</h2>
+      {% if user %}
+        <div>
+          <strong>Привет, {{ user.username }}</strong>
+          <div id="exit">
+              <div><a href="/logout"><button type="button" >Выйти</button></a></div>
+          <div>{% if user and user.role == "admin" %}
+            <form method="post" action="/admin/delete-all" onsubmit="return confirm('Удалить ВСЕ записи? Это необратимо.');">
+              <input type="hidden" name="confirm" value="true">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+              <button type="submit">Удалить всех пользователей</button>
+            </form></div>
+          {% endif %}
+          </div>
+
+        </div>
+      {% else %}
+        <form method="post" action="/login" novalidate>
+          <input name="username" type="text" placeholder="Имя пользователя" required />
+          <input name="password" type="password" placeholder="Пароль" required />
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+          <button type="submit">Войти</button>
+        </form>
+        {% if login_error %}
+          <div class="error">{{ login_error }}</div>
+        {% endif %}
+      {% endif %}
+        {% if user and user.role == "admin" %}
+            <form method="post" action="/admin/delete-by-id-single" onsubmit="return confirm('Удалить запись с указанным id?');">
+              <label>id: <input name="id" type="number" required></label>
+              <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+              <button type="submit">Удалить</button>
+            </form>
+        {% endif %}
+    </div>
+
+    <div class="card">
+      <h3>Таблица данных</h3>
+      {% if user and user.role == "admin" %}
+        {% if rows and rows|length > 0 %}
+          <table>
+            <thead><tr><th>ID</th><th>Имя</th><th>Телефон</th><th>Заезд</th><th>Выезд</th><th>Комната</th></tr></thead>
+            <tbody>
+              {% for r in rows %}
+                <tr>
+                  <td id="table-id">{{ r.id }}</td>
+                  <td id="table-name">{{ r.name }}</td>
+                  <td id="table-phone">{{ r.phone_number }}</td>
+                  <td id="table-arrival">{{ r.date_arrival }}</td>
+                  <td id="table-departure">{{ r.date_departure }}</td>
+                  <td id="table-room">{{ r.room_number }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p>Данные отсутствуют.</p>
+        {% endif %}
+      {% else %}
+        <p>Только для администратора — выполните вход выше.</p>
+      {% endif %}
+    </div>
+  </div>
     <script src="../static/index.js"></script>
 </body>
 </html>
