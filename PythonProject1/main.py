@@ -1,6 +1,6 @@
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from typing import Optional
-from database import Base, engine, SessionLocal, Person, User
+from database import Base, engine, SessionLocal, Person, User,IpRateLimit
 from sqlalchemy.orm import Session
 
 import uvicorn
@@ -13,14 +13,14 @@ from pydantic import BaseModel, Field, field_validator
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from apscheduler.schedulers.background import BackgroundScheduler
-from sqlalchemy import delete
+from sqlalchemy import delete, Column, Integer, String, DateTime
 from contextlib import asynccontextmanager
 from datetime import datetime as dt
-
-# --- Settings (в prod храните в env) ---
+from datetime import datetime, timedelta
+# --- Settings ---
 SECRET_KEY = "replace-with-env-secret"
 SESSION_COOKIE = "session"
-SESSION_MAX_AGE = 60 * 60  # seconds
+SESSION_MAX_AGE = 60 * 60
 CSRF_SALT = "csrf-salt"
 
 # --- Init ---
@@ -29,12 +29,41 @@ serializer = URLSafeTimedSerializer(SECRET_KEY)
 
 scheduler = BackgroundScheduler()
 
-app = FastAPI(lifespan=None)  # временно создадим, затем присвоим lifespan ниже
+app = FastAPI(lifespan=None)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-Base.metadata.create_all(bind=engine)
 
+Base.metadata.create_all(bind=engine)
+RATE_LIMIT_SECONDS = 30 * 60
+
+
+def can_create_booking(db: Session, ip: str) -> bool:
+    # простая логика: ограничение по времени с единственным событием last_booking_at
+    rec = db.query(IpRateLimit).filter_by(ip=ip).first()
+    now = datetime.utcnow()
+    if not rec:
+        # создать сразу запись
+        db.add(IpRateLimit(ip=ip, last_booking_at=now))
+        db.commit()
+        return True
+    if (now - rec.last_booking_at).total_seconds() >= RATE_LIMIT_SECONDS:
+        # обновить время
+        rec.last_booking_at = now
+        db.commit()
+        return True
+    return False
+
+def get_client_ip(request: Request, trust_x_forwarded_for: bool = False) -> str:
+
+    if trust_x_forwarded_for:
+        xff = request.headers.get("x-forwarded-for")
+        if xff:
+            # XFF может содержать список IP, первый — оригинальный клиент в большинстве конфигов
+            return xff.split(",")[0].strip()
+    # безопасный fallback
+    client = request.client
+    return client.host if client is not None else "0.0.0.0"
 def get_db():
     db = SessionLocal()
     try:
@@ -68,7 +97,6 @@ def validate_csrf_token(token: str) -> bool:
     except Exception:
         return False
 
-# --- Ensure admin exists (only for demo) ---
 def init_admin():
     with SessionLocal() as db:
         admin = db.query(User).filter_by(username="admin").first()
@@ -78,7 +106,6 @@ def init_admin():
 
 init_admin()
 
-# --- Pydantic model for booking ---
 class BookingIn(BaseModel):
     name: str = Field(..., min_length=3, max_length=20)
     phone_number: str = Field(..., min_length=5, max_length=20)
@@ -93,7 +120,6 @@ class BookingIn(BaseModel):
             raise ValueError("date_departure must be >= date_arrival")
         return v
 
-# --- Auth helpers / dependencies ---
 def get_current_user(request: Request, db: Session = Depends(get_db)):
     token = request.cookies.get(SESSION_COOKIE)
     if not token:
@@ -112,9 +138,7 @@ def require_admin(user: User = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Admin access required")
     return user
 
-# --- Cleanup implementation ---
 def delete_past_registrations(db: Session) -> int:
-    """Удаляет Person с date_departure < today. Возвращает число удалённых строк."""
     today = date.today()
     stmt = delete(Person).where(Person.date_departure < today)
     result = db.execute(stmt)
@@ -132,10 +156,8 @@ def cleanup_job():
         db.close()
 
 def start_scheduler():
-    # Выполнить чистку сразу при старте, затем каждые 24 часа
     try:
         cleanup_job()
-        # если задача с таким id уже существует, перезапишем её
         if scheduler.get_job("cleanup_job"):
             scheduler.remove_job("cleanup_job")
         scheduler.add_job(cleanup_job, 'interval', hours=24, id="cleanup_job", next_run_time=dt.now())
@@ -151,19 +173,17 @@ def stop_scheduler():
     except Exception as e:
         print(f"[scheduler] stop error: {e}")
 
-# --- Lifespan (заменяет deprecated on_event) ---
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     start_scheduler()
     yield
     stop_scheduler()
 
-# присвоим lifespan при создании приложения
 app = FastAPI(lifespan=lifespan)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-# --- Routes ---
+
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request, db: Session = Depends(get_db)):
     user = get_current_user(request, db)
@@ -194,20 +214,14 @@ def logout():
     resp.delete_cookie(SESSION_COOKIE)
     return resp
 
-@app.post("/admin/delete-all", status_code=204)
+@app.post("/admin/delete-all")
 async def delete_all_people(confirm: bool = Form(...), db: Session = Depends(get_db), user: User = Depends(require_admin)):
-    """
-    Удаляет все записи Person. Требует отправки form-поля confirm=true (чтобы избежать случайных вызовов).
-    Возвращает 204 No Content.
-    """
     if not confirm:
         raise HTTPException(status_code=400, detail="Confirmation required")
     stmt = delete(Person)
     result = db.execute(stmt)
     db.commit()
-    resp = RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
-    return resp
-
+    return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
 
 @app.post("/admin/delete-by-id-single")
 async def delete_by_id_single(
@@ -222,14 +236,16 @@ async def delete_by_id_single(
     result = db.execute(stmt)
     db.commit()
     if result.rowcount == 0:
-        # можно вернуть 404 или редирект с flash-параметром
         raise HTTPException(status_code=404, detail="Person not found")
-    resp = RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
-    return resp
-
+    return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
 
 @app.post("/add-booking", response_model=dict)
-async def create_booking(payload: BookingIn, db: Session = Depends(get_db)):
+async def create_booking(request: Request, payload: BookingIn, db: Session = Depends(get_db)):
+    ip = get_client_ip(request, trust_x_forwarded_for=False)
+    # быстрый in-memory кэш (опционально) для производительности
+    if not can_create_booking(db, ip):
+        raise HTTPException(status_code=429, detail="Too many bookings from this IP, try later")
+
     person = Person(
         name=payload.name.strip(),
         phone_number=payload.phone_number.strip(),
@@ -249,12 +265,6 @@ async def create_booking(payload: BookingIn, db: Session = Depends(get_db)):
         "room_number": person.room_number
     }
 
-@app.get("/api/users")
-def get_people(db: Session = Depends(get_db), user: User = Depends(require_admin)):
-    rows = db.query(Person).all()
-    return [{"id": r.id, "name": r.name, "phone_number": r.phone_number,
-             "date_arrival": r.date_arrival.isoformat(), "date_departure": r.date_departure.isoformat(),
-             "room_number": r.room_number} for r in rows]
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
