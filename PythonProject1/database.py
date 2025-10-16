@@ -15,6 +15,7 @@ class Person(Base):
     date_arrival = Column(Date, nullable=False)
     date_departure = Column(Date, nullable=False)
     room_number = Column(Integer, nullable=False)
+    ip = Column(String, nullable=False)
 
 class User(Base):
     __tablename__ = "users"
@@ -23,8 +24,10 @@ class User(Base):
     password_hash = Column(String, nullable=False)
     role = Column(String, default="user", nullable=False)
 
+# в database.py, модель IpRateLimit должна иметь:
 class IpRateLimit(Base):
-    __tablename__ = "ip_rate_limits"
-    id = Column(Integer, primary_key=True, index=True)
-    ip = Column(String, nullable=False, unique=True, index=True)
-    last_booking_at = Column(DateTime, nullable=False)
+    __tablename__ = "ip_rate_limit"
+    ip = Column(String, primary_key=True)
+    last_booking_at = Column(DateTime)
+    first_attempt_at = Column(DateTime, nullable=True)
+    attempts = Column(Integer, default=0)

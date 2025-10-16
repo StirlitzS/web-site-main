@@ -1,4 +1,4 @@
-from datetime import datetime, date, timedelta
+from datetime import date
 from typing import Optional
 from database import Base, engine, SessionLocal, Person, User,IpRateLimit
 from sqlalchemy.orm import Session
@@ -13,17 +13,19 @@ from pydantic import BaseModel, Field, field_validator
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from apscheduler.schedulers.background import BackgroundScheduler
-from sqlalchemy import delete, Column, Integer, String, DateTime
+from sqlalchemy import delete
 from contextlib import asynccontextmanager
-from datetime import datetime as dt
-from datetime import datetime, timedelta
-# --- Settings ---
+from datetime import datetime as dt, timedelta
+
+
 SECRET_KEY = "replace-with-env-secret"
 SESSION_COOKIE = "session"
 SESSION_MAX_AGE = 60 * 60
 CSRF_SALT = "csrf-salt"
 
-# --- Init ---
+
+
+
 pwd_ctx = CryptContext(schemes=["argon2"], deprecated="auto")
 serializer = URLSafeTimedSerializer(SECRET_KEY)
 
@@ -36,21 +38,32 @@ templates = Jinja2Templates(directory="templates")
 
 Base.metadata.create_all(bind=engine)
 RATE_LIMIT_SECONDS = 30 * 60
-
+MAX_ATTEMPTS = 3
 
 def can_create_booking(db: Session, ip: str) -> bool:
-    # простая логика: ограничение по времени с единственным событием last_booking_at
     rec = db.query(IpRateLimit).filter_by(ip=ip).first()
-    now = datetime.utcnow()
+    now = dt.now()
+    window_start = now - timedelta(seconds=RATE_LIMIT_SECONDS)
+
     if not rec:
-        # создать сразу запись
-        db.add(IpRateLimit(ip=ip, last_booking_at=now))
+        # создаём запись с первой попыткой
+        db.add(IpRateLimit(ip=ip, attempts=1, first_attempt_at=now, last_booking_at=now))
         db.commit()
         return True
-    if (now - rec.last_booking_at).total_seconds() >= RATE_LIMIT_SECONDS:
-        # обновить время
+
+    # если окно истёк — сбрасываем счётчики
+    if rec.first_attempt_at is None or rec.first_attempt_at < window_start:
+        rec.attempts = 1
+        rec.first_attempt_at = now
         rec.last_booking_at = now
         db.commit()
+        return True
+
+    # в пределах окна: увеличиваем и проверяем лимит
+    rec.attempts = (rec.attempts or 0) + 1
+    rec.last_booking_at = now
+    db.commit()
+    if rec.attempts <= MAX_ATTEMPTS:
         return True
     return False
 
@@ -59,9 +72,7 @@ def get_client_ip(request: Request, trust_x_forwarded_for: bool = False) -> str:
     if trust_x_forwarded_for:
         xff = request.headers.get("x-forwarded-for")
         if xff:
-            # XFF может содержать список IP, первый — оригинальный клиент в большинстве конфигов
             return xff.split(",")[0].strip()
-    # безопасный fallback
     client = request.client
     return client.host if client is not None else "0.0.0.0"
 def get_db():
@@ -71,7 +82,6 @@ def get_db():
     finally:
         db.close()
 
-# --- Utilities ---
 def hash_password(password: str) -> str:
     return pwd_ctx.hash(password)
 
@@ -88,7 +98,7 @@ def load_session_token(token: str, max_age: int = SESSION_MAX_AGE) -> Optional[d
         return None
 
 def create_csrf_token() -> str:
-    return serializer.dumps({"ts": datetime.utcnow().isoformat()}, salt=CSRF_SALT)
+    return serializer.dumps({"ts": dt.now().isoformat()}, salt=CSRF_SALT)
 
 def validate_csrf_token(token: str) -> bool:
     try:
@@ -124,16 +134,20 @@ def get_current_user(request: Request, db: Session = Depends(get_db)):
     token = request.cookies.get(SESSION_COOKIE)
     if not token:
         return None
+
     data = load_session_token(token)
     if not data:
         return None
+
     username = data.get("user")
     if not username:
         return None
+
     user = db.query(User).filter_by(username=username).first()
     return user
 
 def require_admin(user: User = Depends(get_current_user)):
+
     if not user or user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin access required")
     return user
@@ -179,6 +193,7 @@ async def lifespan(app: FastAPI):
     yield
     stop_scheduler()
 
+
 app = FastAPI(lifespan=lifespan)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
@@ -218,8 +233,20 @@ def logout():
 async def delete_all_people(confirm: bool = Form(...), db: Session = Depends(get_db), user: User = Depends(require_admin)):
     if not confirm:
         raise HTTPException(status_code=400, detail="Confirmation required")
+    # собрать уникальные IP, которые будут удалены
+    ips = [row[0] for row in db.query(Person.ip).distinct().all() if row[0]]
+    # удалить всех людей
     stmt = delete(Person)
-    result = db.execute(stmt)
+    db.execute(stmt)
+    db.commit()
+    # сбросить лимиты для этих IP (можно удалять записи вместо обнуления)
+    for ip in ips:
+        rec = db.query(IpRateLimit).filter_by(ip=ip).first()
+        if rec:
+            # вариант: обнулить
+            rec.attempts = 0
+            rec.first_attempt_at = None
+            rec.last_booking_at = None
     db.commit()
     return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
 
@@ -245,13 +272,13 @@ async def create_booking(request: Request, payload: BookingIn, db: Session = Dep
     # быстрый in-memory кэш (опционально) для производительности
     if not can_create_booking(db, ip):
         raise HTTPException(status_code=429, detail="Too many bookings from this IP, try later")
-
     person = Person(
         name=payload.name.strip(),
         phone_number=payload.phone_number.strip(),
         date_arrival=payload.date_arrival,
         date_departure=payload.date_departure,
-        room_number=payload.room_number
+        room_number=payload.room_number,
+        ip=ip  # требует поле ip в модели Person
     )
     db.add(person)
     db.commit()
@@ -264,6 +291,7 @@ async def create_booking(request: Request, payload: BookingIn, db: Session = Dep
         "date_departure": person.date_departure.isoformat(),
         "room_number": person.room_number
     }
+
 
 
 if __name__ == "__main__":
