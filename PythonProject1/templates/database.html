@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ title }}</title>
+  <style>
+    table{border-collapse:collapse;width:100%}
+    th,td{border:1px solid #ccc;padding:8px;text-align:left}
+  </style>
+</head>
+<body>
+  <h1>Пользователи — {{ current_user }}</h1>
+  <p><a href="/logout">Выйти</a></p>
+  <table>
+    <thead>
+      <tr><th>ID</th><th>Имя</th><th>Телефон</th><th>Дата заезда</th><th>Дата выезда</th><th>Комната</th></tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td>{{ u.id }}</td>
+        <td>{{ u.name }}</td>
+        <td>{{ u.phone_number }}</td>
+        <td>{{ u.date_arrival }}</td>
+        <td>{{ u.date_departure }}</td>
+        <td>{{ u.room_number }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6">Нет пользователей</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>
