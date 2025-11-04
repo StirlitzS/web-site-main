@@ -46,12 +46,10 @@ def can_create_booking(db: Session, ip: str) -> bool:
     window_start = now - timedelta(seconds=RATE_LIMIT_SECONDS)
 
     if not rec:
-        # создаём запись с первой попыткой
         db.add(IpRateLimit(ip=ip, attempts=1, first_attempt_at=now, last_booking_at=now))
         db.commit()
         return True
 
-    # если окно истёк — сбрасываем счётчики
     if rec.first_attempt_at is None or rec.first_attempt_at < window_start:
         rec.attempts = 1
         rec.first_attempt_at = now
@@ -59,7 +57,6 @@ def can_create_booking(db: Session, ip: str) -> bool:
         db.commit()
         return True
 
-    # в пределах окна: увеличиваем и проверяем лимит
     rec.attempts = (rec.attempts or 0) + 1
     rec.last_booking_at = now
     db.commit()
@@ -233,17 +230,13 @@ def logout():
 async def delete_all_people(confirm: bool = Form(...), db: Session = Depends(get_db), user: User = Depends(require_admin)):
     if not confirm:
         raise HTTPException(status_code=400, detail="Confirmation required")
-    # собрать уникальные IP, которые будут удалены
     ips = [row[0] for row in db.query(Person.ip).distinct().all() if row[0]]
-    # удалить всех людей
     stmt = delete(Person)
     db.execute(stmt)
     db.commit()
-    # сбросить лимиты для этих IP (можно удалять записи вместо обнуления)
     for ip in ips:
         rec = db.query(IpRateLimit).filter_by(ip=ip).first()
         if rec:
-            # вариант: обнулить
             rec.attempts = 0
             rec.first_attempt_at = None
             rec.last_booking_at = None
@@ -269,7 +262,6 @@ async def delete_by_id_single(
 @app.post("/add-booking", response_model=dict)
 async def create_booking(request: Request, payload: BookingIn, db: Session = Depends(get_db)):
     ip = get_client_ip(request, trust_x_forwarded_for=False)
-    # быстрый in-memory кэш (опционально) для производительности
     if not can_create_booking(db, ip):
         raise HTTPException(status_code=429, detail="Too many bookings from this IP, try later")
     person = Person(
@@ -278,7 +270,7 @@ async def create_booking(request: Request, payload: BookingIn, db: Session = Dep
         date_arrival=payload.date_arrival,
         date_departure=payload.date_departure,
         room_number=payload.room_number,
-        ip=ip  # требует поле ip в модели Person
+        ip=ip  
     )
     db.add(person)
     db.commit()
