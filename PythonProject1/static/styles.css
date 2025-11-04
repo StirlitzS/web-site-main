@@ -390,9 +390,9 @@ div, ul, h1, p{
 
 #review-button{
   position: relative;
-  overflow: hidden;         /* обрезать изображение по краям */
+  overflow: hidden;        
   display: inline-block;
-  padding: 0;               /* текст внутри задаём через .btn-text */
+  padding: 0;              
   width: 400px;
   height: 120px;
   border: none;
@@ -540,7 +540,6 @@ input {
     height: 100%;
 }
 
-/* Добавить стили для контейнера формы */
 .form-container {
 font-weight: 500;
   max-width: 350px;
@@ -591,12 +590,12 @@ font-weight: 500;
     font-size: 20px;
 }
 
-/* Добавить красный цвет фона для кнопки "Отмена" */
+
 .form-container .cancel {
   background-color: black;
 }
 
-/* Добавить некоторые эффекты наведения на кнопки */
+
 .form-container .btn:hover, .open-button:hover {
   opacity: 0.95;
 }
@@ -679,7 +678,7 @@ form .btn {
   opacity: 1;
 }
 .container {
-  display: none; /* скрыть по умолчанию */
+  display: none; 
   transition: opacity 0.2s ease;
   opacity: 0;
     background-color:white;
@@ -688,11 +687,11 @@ form .btn {
     padding: 20px;
 }
 .container table{
-    border-collapse: collapse; /* чтобы границы соседних ячеек сливались */
+    border-collapse: collapse; 
 }
 
 th, td {
-  border: 1px solid #ccc;   /* цвет/толщина линии */
+  border: 1px solid #ccc;   
   padding: 8px;
 }
 #table-id{
