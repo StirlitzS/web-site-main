@@ -3,13 +3,11 @@
   if (!arrivalValue) return false;
   const arrival = new Date(arrivalValue);
   const today = new Date();
-  // обнулим время у today
   today.setHours(0,0,0,0);
   const min = new Date(today);
   min.setDate(min.getDate() + 3);
   return arrival >= min;
 }
-  // Хедер при скролле
   let prevScroll = window.pageYOffset || 0;
   window.addEventListener('scroll', () => {
     const cur = window.pageYOffset || 0;
@@ -19,7 +17,6 @@
     prevScroll = cur;
   });
 
-  // Универсальный слайдер-конструктор
   function createSlider(options) {
     const wrapper = document.getElementById(options.wrapperId);
     if (!wrapper) return;
@@ -52,30 +49,24 @@
     update();
   }
 
-  // DOM ready
   document.addEventListener('DOMContentLoaded', () => {
-    // Слайдеры
     createSlider({ wrapperId: 'slides-main', prevId: 'prev', nextId: 'next', gap: 120 });
     createSlider({ wrapperId: 'slides-room', prevId: 'prev-room', nextId: 'next-room', gap: 120 });
     createSlider({ wrapperId: 'slides-feedbacks', prevId: 'prev-feedbacks', nextId: 'next-feedbacks', gap: 180 });
 
     const hat = document.getElementById('hat');
 
-    // Оверлеи и модалки
     const overlay = document.getElementById('overlay');
-    const overlay2 = document.getElementById('overlay-2'); // если используется
-    const bookingBox = document.getElementById('myForm');   // popup бронирования
-    const bookingForm = document.getElementById('myFormIn'); // форма бронирования (id строгий)
-    // NOTE: review elements могут иметь id review-1 / my-review-1 (в вашем HTML)
-    const reviewModal = document.getElementById('review-1') || document.getElementById('review');  // отзыв
-    const reviewForm = document.getElementById('my-review-1') || document.getElementById('my-review'); // форма отзыва
+    const overlay2 = document.getElementById('overlay-2'); 
+    const bookingBox = document.getElementById('myForm');   
+    const bookingForm = document.getElementById('myFormIn'); 
+    const reviewModal = document.getElementById('review-1') || document.getElementById('review'); 
+    const reviewForm = document.getElementById('my-review-1') || document.getElementById('my-review'); 
     const reviewBtn = document.getElementById('review-button');
 
-    // Универсальные show/hide
     function showElement(el) { if (el) el.style.display = 'block'; }
     function hideElement(el) { if (el) el.style.display = 'none'; }
 
-    // Бронирование open/close (экспортируемые функции используются в HTML)
     window.openForm = function () {
       showElement(bookingBox);
       showElement(overlay);
@@ -90,9 +81,7 @@
       if (bookingForm) bookingForm.reset();
     };
 
-    // Отзыв modal — корректная реализация открытия/закрытия
     (function setupReview() {
-      // overlay для review: сначала попробуем overlay2, потом overlay
       const reviewOverlay = overlay2 || overlay;
       if (!reviewBtn || !reviewModal) return;
 
@@ -117,13 +106,11 @@
         if (reviewForm) reviewForm.reset();
       }
 
-      // Открытие по кнопке
       reviewBtn.addEventListener('click', (e) => {
         e.preventDefault();
         openReview();
       });
 
-      // Закрытие по всем кнопкам с классом .cancel внутри модалки
       reviewModal.querySelectorAll('.cancel').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.preventDefault();
@@ -131,12 +118,10 @@
         });
       });
 
-      // Закрытие по клику на overlay (если существует)
       if (reviewOverlay) {
         reviewOverlay.addEventListener('click', closeReview);
       }
 
-      // Закрытие по Escape
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && getComputedStyle(reviewModal).display !== 'none') {
           closeReview();
@@ -150,25 +135,22 @@
         });
       }
 
-      // Ensure hidden by default
       if (getComputedStyle(reviewModal).display === 'block') reviewModal.style.display = 'none';
       if (reviewOverlay && getComputedStyle(reviewOverlay).display === 'block') reviewOverlay.style.display = 'none';
     })();
 
-    // Клик по overlay закрывает соответствующие модалки (для booking/общих)
     if (overlay) {
       overlay.addEventListener('click', () => {
         closeForm();
-        // если reviewModal использует тот же overlay — закроется в setupReview через reviewOverlay listener
+
       });
     }
     if (overlay2) {
       overlay2.addEventListener('click', () => {
-        // handled in setupReview as well
+
       });
     }
 
-    // --- Бронирование (строго по id) ---
     if (bookingForm) {
       bookingForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -179,9 +161,7 @@
         }
 
         const raw = Object.fromEntries(new FormData(bookingForm).entries());
-        // Приведение типов
         if (raw.room_number !== undefined) raw.room_number = parseInt(raw.room_number, 10);
-        // Проверка дат (yyyy-mm-dd expected by backend)
         if (!raw.date_arrival || !raw.date_departure) {
           alert('Введите даты заезда и выезда.');
           return;
@@ -204,7 +184,6 @@
           return;
         }
 
-        // Отправка
         try {
           const res = await fetch('/add-booking', {
             method: 'POST',
@@ -236,7 +215,6 @@
             return;
           }
 
-          // Успех
           alert('Заявка принята');
           bookingForm.reset();
           hideElement(bookingBox);
@@ -249,18 +227,17 @@
       });
     }
 
-    // Ensure hidden by default for booking/modal overlays
+
     if (overlay && getComputedStyle(overlay).display === 'block') overlay.style.display = 'none';
     if (overlay2 && getComputedStyle(overlay2).display === 'block') overlay2.style.display = 'none';
     if (bookingBox && getComputedStyle(bookingBox).display === 'block') bookingBox.style.display = 'none';
     (function setupAdminToggle() {
-  const wrapper = document.getElementById('admin-button'); // у вас wrapper содержит кнопку
+  const wrapper = document.getElementById('admin-button'); 
   const btn = wrapper ? wrapper.querySelector('button') : null;
-  const panel = document.getElementById('admin-btn-container'); // контейнер с формой
+  const panel = document.getElementById('admin-btn-container'); 
 
-  if (!btn || !panel) return; // ничего не делаем, если чего-то нет
+  if (!btn || !panel) return; 
 
-  // гарантируем начальное состояние
   if (getComputedStyle(panel).display !== 'block') panel.style.display = 'none';
 
   btn.addEventListener('click', (e) => {
@@ -275,8 +252,8 @@
   });
 })();
 
-  }); // DOMContentLoaded
-})(); // IIFE
+  }); 
+})(); 
 document.addEventListener('DOMContentLoaded', function () {
   const wrapper = document.getElementById('admin-button');
   const btn = wrapper ? wrapper.querySelector('button') : null;
